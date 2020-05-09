@@ -10,7 +10,7 @@ public class ArrayDeque<T> {
         /* double the size when it uses more than 2/3 */
         T[] temp = (T []) new Object[c];
         if (start + 1 + size < capacity) {
-            System.arraycopy(items,0, temp, 0, size);
+            System.arraycopy(items, start + 1, temp, 0, size);
         }
         else {
             System.arraycopy(items, start + 1, temp, 0, capacity - start - 1);
@@ -58,8 +58,8 @@ public class ArrayDeque<T> {
 
 
     public void printDeque() {
-        for (int i = 0; i < size; i++){
-            System.out.println(items[(start+1+i)%capacity]);
+        for (int i = 0; i < size; i++) {
+            System.out.println(items[(start + 1 + i) % capacity]);
             System.out.println(' ');
         }
         System.out.println("\n");
@@ -96,21 +96,6 @@ public class ArrayDeque<T> {
             return null;
         }
         return items[(start + 1 + index) % capacity];
-    }
-
-
-    public static void main(String args[]) {
-        ArrayDeque<Integer> s1 = new ArrayDeque<>();
-        s1.addLast(5);
-        s1.addLast(10);
-        s1.addLast(11);
-        s1.addLast(11);
-        s1.addLast(12);
-        s1.addLast(13);
-        s1.addLast(14);
-        s1.addLast(15);
-        System.out.println(s1.isEmpty());
-
     }
 
 }
