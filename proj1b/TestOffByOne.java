@@ -15,5 +15,6 @@ public class TestOffByOne {
         org.junit.Assert.assertTrue(offByOne.equalChars('&', '%'));
         org.junit.Assert.assertFalse(offByOne.equalChars('a', 'z'));
         org.junit.Assert.assertFalse(offByOne.equalChars('a', '%'));
+        org.junit.Assert.assertFalse(offByOne.equalChars('a', 'A'));
     }
 }

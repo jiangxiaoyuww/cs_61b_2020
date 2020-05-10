@@ -6,7 +6,7 @@ public class OffByN implements CharacterComparator {
     }
 
     @Override
-    public boolean equalChars (char a, char b) {
+    public boolean equalChars(char a, char b) {
         if (a - b == n || a - b == -n) {
             return true;
         }
