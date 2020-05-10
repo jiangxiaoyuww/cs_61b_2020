@@ -56,25 +56,28 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * Return oldest item, but don't remove it.
      */
     public T peek() {
+        if (this.fillCount == 0) {
+            throw new RuntimeException("Ring buffer underflow");
+        }
         return rb[(first + 1 + this.capacity) % capacity];
     }
 
 
 
     private class SIterator implements Iterator<T> {
-        private int Pos;
+        private int pOs;
 
         SIterator() {
-            Pos = 0;
+            pOs = 0;
         }
 
         public boolean hasNext() {
-            return Pos < fillCount;
+            return pOs < fillCount;
         }
 
         public T next() {
-            T returnItem = rb[(Pos + first + 1 + capacity) % capacity];
-            Pos += 1;
+            T returnItem = rb[(pOs + first + 1 + capacity) % capacity];
+            pOs += 1;
             return returnItem;
         }
     }
