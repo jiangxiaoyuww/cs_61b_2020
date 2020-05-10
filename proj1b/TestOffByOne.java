@@ -4,9 +4,16 @@ import static org.junit.Assert.*;
 public class TestOffByOne {
     /*
     // You must use this CharacterComparator and not instantiate
-    // new ones, or the autograder might be upset.
-    static CharacterComparator offByOne = new OffByOne();
+    // new ones, or the autograder might be upset. */
 
+    static CharacterComparator offByOne = new OffByOne();
+    @Test
     // Your tests go here.
-    Uncomment this class once you've created your CharacterComparator interface and OffByOne class. **/
+    public void testOffByOne() {
+        org.junit.Assert.assertTrue(offByOne.equalChars('a', 'b'));
+        org.junit.Assert.assertTrue(offByOne.equalChars('r', 'q'));
+        org.junit.Assert.assertTrue(offByOne.equalChars('&', '%'));
+        org.junit.Assert.assertFalse(offByOne.equalChars('a', 'z'));
+        org.junit.Assert.assertFalse(offByOne.equalChars('a', '%'));
+    }
 }
