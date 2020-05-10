@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Josh Hug
  */
-public class Plip extends Creature {
+public class Clorus extends Creature {
 
     /**
      * red color.
@@ -31,8 +31,8 @@ public class Plip extends Creature {
     /**
      * creates plip with energy equal to E.
      */
-    public Plip(double e) {
-        super("plip");
+    public Clorus(double e) {
+        super("clorus");
         r = 0;
         g = 0;
         b = 0;
@@ -42,7 +42,7 @@ public class Plip extends Creature {
     /**
      * creates a plip with energy equal to 1.
      */
-    public Plip() {
+    public Clorus() {
         this(1);
     }
 
@@ -55,9 +55,9 @@ public class Plip extends Creature {
      * that you get this exactly correct.
      */
     public Color color() {
-        r = 99;
-        b = 76;
-        g = (int) (96 * energy + 63);
+        r = 34;
+        b = 231;
+        g = 0;
         return color(r, g, b);
     }
 
@@ -65,7 +65,7 @@ public class Plip extends Creature {
      * Do nothing with C, Plips are pacifists.
      */
     public void attack(Creature c) {
-        // do nothing.
+        energy += c.energy();
     }
 
     /**
@@ -74,7 +74,7 @@ public class Plip extends Creature {
      * private static final variable. This is not required for this lab.
      */
     public void move() {
-        energy = Math.max(energy - 0.15, 0);
+        energy -= 0.03;
     }
 
 
@@ -82,7 +82,7 @@ public class Plip extends Creature {
      * Plips gain 0.2 energy when staying due to photosynthesis.
      */
     public void stay() {
-        energy = Math.min(energy + 0.2, 2);
+        energy -= 0.01;
     }
 
     /**
@@ -90,9 +90,9 @@ public class Plip extends Creature {
      * lost to the process. Now that's efficiency! Returns a baby
      * Plip.
      */
-    public Plip replicate() {
+    public Clorus replicate() {
         energy = energy / 2;
-        return new Plip(energy);
+        return new Clorus(energy);
     }
 
     /**
@@ -111,13 +111,13 @@ public class Plip extends Creature {
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
         // Rule 1
         List<Direction> emptyNeighbors = new ArrayList<>();
-        boolean anyClorus = false;
+        List<Direction> plipss = new ArrayList<>();
         for (Direction key: neighbors.keySet()){
-            if (neighbors.get(key).name().equals("empty")) {
+            if (neighbors.get(key).name() == "empty") {
                 emptyNeighbors.add(key);
             }
-            if (neighbors.get(key).name().equals("clorus")) {
-                anyClorus = true;
+            if (neighbors.get(key).name() == "plip") {
+                plipss.add(key);
             }
         }
         if (emptyNeighbors.size() == 0) {
@@ -126,15 +126,19 @@ public class Plip extends Creature {
         // (Google: Enhanced for-loop over keys of NEIGHBORS?)
         // for () {...}
         Random randomGenerator = new Random();
-        int seed = randomGenerator.nextInt(emptyNeighbors.size());
+        if (plipss.size() > 0) {
+            int seed = randomGenerator.nextInt(plipss.size());
+            return new Action(Action.ActionType.ATTACK, plipss.get(seed));
+        }
+
+        // Rule 3
         if (energy >= 1) {
+            int seed = randomGenerator.nextInt(emptyNeighbors.size());
             return new Action(Action.ActionType.REPLICATE, emptyNeighbors.get(seed));
         }
 
-        int b = randomGenerator.nextInt(2);
-        if (anyClorus && b == 0) {
-            return new Action(Action.ActionType.MOVE, emptyNeighbors.get(seed));
-        }
-        return new Action(Action.ActionType.STAY);
+        // Rule 4
+        int seed = randomGenerator.nextInt(emptyNeighbors.size());
+        return new Action(Action.ActionType.MOVE, emptyNeighbors.get(seed));
     }
 }
